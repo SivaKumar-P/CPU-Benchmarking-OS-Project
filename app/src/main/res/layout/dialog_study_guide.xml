@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📚 Code &amp; OS Architecture Study Guide"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Operating Systems • Java &amp; Kotlin Interop • Functions vs. Listeners"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Card 1: Function vs Listener -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Relation Between Function &amp; Listener"
+                android:textColor="@color/accent_cyan"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp"
+                android:text="• Listener (OOP Pattern): An interface declaring callback contracts (e.g., BenchmarkListener.java). A background thread invokes listener methods upon reaching execution milestones, decoupling thread logic from the caller.\n\n• Function (Functional Paradigm): A first-class citizen in Kotlin representing an executable block with input arguments and a return value.\n\n• The Bridge (SAM Conversion): Single Abstract Method interfaces (e.g., BenchmarkProgressListener.java) allow Kotlin to seamlessly convert a lambda function into a Java listener instance:\n   Kotlin: engine.setOnProgressListener { info -> updateUI(info) }\n   Java:   engine.setOnProgressListener(new BenchmarkProgressListener() { ... })\n\n• Thread Boundaries: In Android, background threads cannot update the UI. The listener pattern dispatches events from worker threads across the OS thread boundary to the Main UI Looper via runOnUiThread." />
+        </LinearLayout>
+
+        <!-- Card 2: Java and Kotlin Interoperability -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. Android Architecture: Java &amp; Kotlin Coexistence"
+                android:textColor="@color/accent_green"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp"
+                android:text="• Java Engine (CpuBenchmarkEngine.java):\n  Implements multi-threading with java.util.concurrent.ExecutorService, AtomicLong synchronization, and probes Linux kernel stats (/proc/self/task/TID/stat).\n\n• Kotlin UI &amp; Workload (MainActivity.kt, Workload.kt):\n  Manages reactive UI updates, MPAndroidChart rendering, and Kotlin high-level math workloads.\n\n• Bi-directional Interop:\n  Kotlin code transparently calls Java classes, while Java threads fire callbacks that Kotlin lambdas handle smoothly." />
+        </LinearLayout>
+
+        <!-- Card 3: OS Scheduling & Core Highlighting (R3) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. OS Scheduling &amp; Hardware Core Affinity (R3)"
+                android:textColor="@color/accent_pink"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp"
+                android:text="• Linux Completely Fair Scheduler (CFS):\n  Android user threads map 1-to-1 to Linux kernel tasks. CFS allocates CPU time proportional to thread nice values (-20 highest priority to +19 lowest priority).\n\n• Core Detection:\n  Field 39 of /proc/self/task/TID/stat reports the exact CPU core the thread last executed on. Our app samples this to dynamically highlight active CPU cores.\n\n• Thread vs. Process Scheduling:\n  Threads share the same virtual address space, memory heap, and open files (PID is shared, TIDs differ). Processes have isolated memory spaces and page tables, incurring higher context-switch overhead." />
+        </LinearLayout>
+
+        <!-- Card 4: Amdahl's Law & Race Conditions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. Amdahl's Law &amp; Race Conditions"
+                android:textColor="@color/primary_purple"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp"
+                android:text="• Amdahl's Law: Speedup S(N) = 1 / ((1 - P) + P/N).\n  Even with infinite CPU cores, the speedup is bounded by 1 / (1 - P). For example, if 10% of a workload is serial, speedup cannot exceed 10x.\n\n• Race Conditions: Unsynchronized counter updates (total++) involve a three-step cycle: READ, MODIFY, WRITE. Concurrent threads interleave these steps, overwriting each other's updates. Synchronization via AtomicLong ensures hardware-level atomic instructions (CAS - Compare-And-Swap)." />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCloseStudyGuide"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Close Study Guide"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_primary" />
+
+    </LinearLayout>
+</ScrollView>

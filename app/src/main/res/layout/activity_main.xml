@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Title & Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚡ Multi-Core CPU Benchmark"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Threads • Linux CFS Scheduling • Race Conditions • Amdahl's Law"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- CPU & Process Info Banner -->
+        <TextView
+            android:id="@+id/tvCores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🖥 Detecting CPU cores..."
+            android:textColor="@color/accent_cyan"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Top Action Bar: Tutorial & Study Guide Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <Button
+                android:id="@+id/btnOpenTutorial"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:text="🎬 Animated Video &amp; Audio"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_button_primary"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnOpenStudyGuide"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="44dp"
+                android:text="📚 Code &amp; OS Study Guide"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_card_rounded"
+                android:layout_marginStart="6dp" />
+        </LinearLayout>
+
+        <!-- ============================================================== -->
+        <!-- REQUIREMENT R3: CPU Cores Live Grid & Scheduling Monitor       -->
+        <!-- ============================================================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="🧭 Requirement R3: CPU Core &amp; Scheduling Monitor"
+                    android:textColor="@color/accent_green"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvProcessId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PID: 0000"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Each thread runs which core is highlighted below in real-time:"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Dynamic CPU Core Grid Container -->
+            <LinearLayout
+                android:id="@+id/llCpuCoresGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Thread Scheduling vs Process Scheduling Info -->
+            <TextView
+                android:id="@+id/tvSchedulingModeDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface_dark"
+                android:padding="8dp"
+                android:fontFamily="monospace"
+                android:text="Thread Scheduling: Linux CFS maps user threads (TIDs) 1:1 to hardware cores. Process memory (PID) is shared among all worker threads."
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- OS Scheduling Policy Selector -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OS Scheduling Policy (Nice Priority):"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <RadioGroup
+                android:id="@+id/rgSchedulingPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <RadioButton
+                    android:id="@+id/rbSchedNormal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Normal (Nice 0)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:buttonTint="@color/accent_cyan"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rbSchedBackground"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Background (+10)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:buttonTint="@color/accent_cyan" />
+
+                <RadioButton
+                    android:id="@+id/rbSchedUrgent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Urgent (-16)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:buttonTint="@color/accent_cyan" />
+            </RadioGroup>
+
+            <!-- Thread Execution Log (Thread -> Core mapping) -->
+            <TextView
+                android:id="@+id/tvCoreMappingLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface_dark"
+                android:padding="10dp"
+                android:fontFamily="monospace"
+                android:text="Thread-to-Core mappings will appear when benchmark runs..."
+                android:textColor="@color/accent_cyan"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- ============================================================== -->
+        <!-- BENCHMARK CONFIGURATION CARD                                    -->
+        <!-- ============================================================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workload &amp; Architecture"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/rgWorkload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+
+                <RadioButton
+                    android:id="@+id/rbPrime"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Prime Counting"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rbMatrix"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Matrix Multiply"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tvWorkloadNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prime mode: counts primes up to the range below"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Execution Engine Selector (Java vs Kotlin) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Execution Engine (Java &amp; Kotlin Coexistence):"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <RadioGroup
+                android:id="@+id/rgEngine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <RadioButton
+                    android:id="@+id/rbEngineJava"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Java Engine (Listeners)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:buttonTint="@color/accent_pink"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rbEngineKotlin"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Kotlin Engine (Functions)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:buttonTint="@color/accent_pink" />
+            </RadioGroup>
+
+            <!-- Thread Count Selector -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thread Count (Concurrent Workers)"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <RadioGroup
+                android:id="@+id/rgThreads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <RadioButton
+                    android:id="@+id/rb1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rb2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple" />
+
+                <RadioButton
+                    android:id="@+id/rb4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple" />
+
+                <RadioButton
+                    android:id="@+id/rb8"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@color/primary_purple" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Range to search for primes (up to)"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etRange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="5000000"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:background="@drawable/bg_input_field" />
+
+        </LinearLayout>
+
+        <!-- Benchmark Action Buttons -->
+        <Button
+            android:id="@+id/btnRun"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Run Selected Benchmark (avg of 3)"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_primary"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/btnRunAll"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Run Full Sweep (1 → 2 → 4 → 8 Threads)"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_runall"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/btnCompareSafety"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Compare Safe vs Unsafe Timing (Race Condition)"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_compare"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/btnRaceDemo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Run Race-Condition Stress Demo (8 threads x5)"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_race"
+            android:layout_marginBottom="14dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_purple"
+            android:visibility="gone"
+            android:layout_marginBottom="14dp" />
+
+        <!-- ============================================================== -->
+        <!-- AMDAHL'S LAW APPROPRIATE MODELING CARD                         -->
+        <!-- ============================================================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📊 Amdahl's Law Analysis &amp; Speedup Modeling"
+                android:textColor="@color/accent_cyan"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Theoretical Speedup: S(N) = 1 / ((1 - P) + P/N)"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Amdahl Metrics Display -->
+            <TextView
+                android:id="@+id/tvAmdahlSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface_dark"
+                android:padding="10dp"
+                android:fontFamily="monospace"
+                android:text="Run a multi-thread benchmark or sweep to calculate parallel fraction (P) and asymptotic speedup limit."
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Interactive Amdahl Simulator Slider -->
+            <TextView
+                android:id="@+id/tvAmdahlSliderLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interactive Simulator: Parallel Fraction (P) = 90%"
+                android:textColor="@color/accent_green"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <SeekBar
+                android:id="@+id/sbAmdahlParallel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:progress="40"
+                android:progressTint="@color/accent_green"
+                android:thumbTint="@color/accent_green"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:id="@+id/tvAmdahlSliderProjection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:text="At P = 90%: 2T = 1.82x | 4T = 3.08x | 8T = 4.71x | Max (∞) = 10.0x" />
+        </LinearLayout>
+
+        <!-- Benchmark Execution Log Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:id="@+id/tvLog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="Results will appear here..."
+                android:textColor="@color/text_primary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- MPAndroidChart Combined Chart Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_rounded"
+            android:padding="8dp">
+
+            <com.github.mikephil.charting.charts.CombinedChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
